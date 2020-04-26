@@ -1,0 +1,77 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes" 
+                access="global" controller="ContactListAndCreateController">
+
+    <aura:attribute name="data" type="List" />
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="showNewContact" type="Boolean" default="false" />
+	<aura:attribute name="newContactId" type="Id" />
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <lightning:card title="List Of Contacts" iconName="standard:contact">
+    <div style="width:100%;">
+        
+        <lightning:layout multipleRows="true" class="max-width">
+                
+            
+        <div class="slds-m-top--x-small">
+             <lightning:layoutItem size="12" padding="horizontal-small">
+                        <lightning:datatable  data="{!v.data}"
+                                              columns="{!v.columns}"
+                                              keyField="Id"
+                                              hideCheckboxColumn="false"
+                                              showRowNumberColumn = "false"
+                                              sortedBy="Id"
+                                              sortedDirection="asc"
+                                              onrowselection="{!c.handleRowSelect}"
+                                              aura:id="activeContactsTable"/>
+
+              </lightning:layoutItem>
+         </div>
+        <!-- Contact Edit Form Goes Here -->
+          <lightning:layoutItem size="12" padding="around-small">
+              <lightning:input aura:id="newContactCheckbox" type="checkbox" value="{!v.showNewContact}" onclick="{!c.createNewContact}" label="Or Create a New Contact"/>
+          </lightning:layoutItem>
+            
+        <lightning:recordEditForm objectApiName="Contact" recordId="{!v.newContactId}"  aura:id="contactForm">
+            <aura:if isTrue="{!v.showNewContact}" >
+            
+            <div class="slds-m-top--x-small">
+                    <lightning:layoutItem size="12" padding="horizontal-small">
+                                <lightning:inputField fieldName="Name" required="true" aura:id="Name"/>
+                    </lightning:layoutItem>
+            </div>
+                    
+            <div class="slds-m-top--x-small">
+                    <lightning:layoutItem size="12" padding="horizontal-small">
+                                <lightning:inputField fieldName="Email" required="true" aura:id="Email"/>
+                    </lightning:layoutItem>
+            </div>
+            
+            <div class="slds-m-top--x-small">
+                    <lightning:layoutItem size="12" padding="horizontal-small">
+                                <lightning:inputField fieldName="Title" required="true" aura:id="Title"/>
+                    </lightning:layoutItem>
+            </div>
+            
+            <div class="slds-m-top--x-small">
+                    <lightning:layoutItem size="12" padding="horizontal-small">
+                                <lightning:inputField fieldName="MobilePhone" required="true" aura:id="MobilePhone"/>
+                    </lightning:layoutItem>
+            </div>
+            
+            </aura:if>
+        </lightning:recordEditForm>
+            
+            
+        </lightning:layout>
+        
+         <div class="top-padding slds-align--absolute-center slds-p-around--medium">
+                <lightning:button label="Cancel" />
+                &nbsp;
+                <lightning:button  class="slds-button_brand"
+                                   label="Save" />
+         </div>
+       
+    </div>
+        </lightning:card>
+</aura:component>
